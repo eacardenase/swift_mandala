@@ -19,7 +19,7 @@ enum ImageResource: String {
 }
 
 extension UIImage {
-    convenience init(resource: ImageResource) {
+    convenience init(usingResource resource: ImageResource) {
         self.init(named: resource.rawValue)!
     }
 }
