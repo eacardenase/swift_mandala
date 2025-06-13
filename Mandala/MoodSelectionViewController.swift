@@ -115,13 +115,13 @@ extension MoodSelectionViewController {
         // visualEffectView
         NSLayoutConstraint.activate([
             visualEffectView.leadingAnchor.constraint(
-                equalTo: view.layoutMarginsGuide.leadingAnchor
+                equalTo: view.leadingAnchor
             ),
             visualEffectView.trailingAnchor.constraint(
-                equalTo: view.layoutMarginsGuide.trailingAnchor
+                equalTo: view.trailingAnchor
             ),
             visualEffectView.bottomAnchor.constraint(
-                equalTo: view.layoutMarginsGuide.bottomAnchor
+                equalTo: view.bottomAnchor
             ),
         ])
 
@@ -132,13 +132,13 @@ extension MoodSelectionViewController {
                 constant: 8
             ),
             emojiStackView.leadingAnchor.constraint(
-                equalTo: visualEffectView.leadingAnchor
+                equalTo: view.layoutMarginsGuide.leadingAnchor
             ),
             emojiStackView.trailingAnchor.constraint(
-                equalTo: visualEffectView.trailingAnchor
+                equalTo: view.layoutMarginsGuide.trailingAnchor
             ),
             emojiStackView.bottomAnchor.constraint(
-                equalTo: visualEffectView.bottomAnchor
+                equalTo: view.layoutMarginsGuide.bottomAnchor
             ),
             emojiStackView.heightAnchor.constraint(equalToConstant: 50),
         ])
