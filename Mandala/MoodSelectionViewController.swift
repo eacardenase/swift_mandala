@@ -48,7 +48,7 @@ class MoodSelectionViewController: UIViewController {
             addMoodButton.backgroundColor = currentMood.color
         }
     }
-    let moodListViewController = MoodListViewController()
+    let moodsConfigurable: MoodsConfigurable = MoodListViewController()
 
     let visualEffectView: UIVisualEffectView = {
         let blurEffect = UIBlurEffect(style: .light)
@@ -73,6 +73,7 @@ class MoodSelectionViewController: UIViewController {
 
         button.translatesAutoresizingMaskIntoConstraints = false
         button.tintColor = .white
+        button.addTarget(self, action: #selector(addMoodEntry), for: .touchUpInside)
 
         return button
     }()
@@ -107,13 +108,13 @@ class MoodSelectionViewController: UIViewController {
 
 extension MoodSelectionViewController {
     func setupViews() {
-        moodListViewController.view.bounds = view.bounds
-        
-        addChild(moodListViewController)
-        view.addSubview(moodListViewController.view)
-        
-        moodListViewController.didMove(toParent: self)
-        
+        moodsConfigurable.view.bounds = view.bounds
+
+        addChild(moodsConfigurable)
+        view.addSubview(moodsConfigurable.view)
+
+        moodsConfigurable.didMove(toParent: self)
+
         visualEffectView.contentView.addSubview(emojiStackView)
 
         view.addSubview(visualEffectView)
@@ -177,5 +178,13 @@ extension MoodSelectionViewController {
         }
 
         currentMood = moods[selectedIndex]
+    }
+
+    @objc func addMoodEntry(_ sender: UIButton) {
+        guard let currentMood = currentMood else { return }
+
+        let newMoodEntry = MoodEntry(mood: currentMood, timestamp: Date())
+
+        moodsConfigurable.add(newMoodEntry)
     }
 }
