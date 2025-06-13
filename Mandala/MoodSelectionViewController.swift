@@ -11,12 +11,19 @@ class MoodSelectionViewController: UIViewController {
 
     var moods = [Mood]() {
         didSet {
+            currentMood = moods.first
+
             moodButtons = moods.map { mood in
                 let moodButton = UIButton()
 
                 moodButton.setImage(mood.image, for: .normal)
                 moodButton.imageView?.contentMode = .scaleAspectFit
                 moodButton.adjustsImageWhenHighlighted = false
+                moodButton.addTarget(
+                    self,
+                    action: #selector(moodSelectionChanged),
+                    for: .touchUpInside
+                )
 
                 return moodButton
             }
@@ -26,6 +33,19 @@ class MoodSelectionViewController: UIViewController {
         didSet {
             oldValue.forEach { $0.removeFromSuperview() }
             moodButtons.forEach { emojiStackView.addArrangedSubview($0) }
+        }
+    }
+    var currentMood: Mood? {
+        didSet {
+            guard let currentMood = currentMood else {
+                addMoodButton.setTitle(nil, for: .normal)
+                addMoodButton.backgroundColor = nil
+
+                return
+            }
+
+            addMoodButton.setTitle("I'm \(currentMood.name)", for: .normal)
+            addMoodButton.backgroundColor = currentMood.color
         }
     }
 
@@ -51,9 +71,7 @@ class MoodSelectionViewController: UIViewController {
         let button = UIButton(type: .custom)
 
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle("Add Mood", for: .normal)
         button.tintColor = .white
-        button.backgroundColor = .systemPink
 
         return button
     }()
@@ -74,11 +92,12 @@ class MoodSelectionViewController: UIViewController {
         moods = [
             .happy, .sad, .angry, .goofy, .crying, .confused, .sleepy, .meh,
         ]
-        
+
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
-            
-            self.addMoodButton.layer.cornerRadius = self.addMoodButton.bounds.height / 2
+
+            self.addMoodButton.layer.cornerRadius =
+                self.addMoodButton.bounds.height / 2
         }
     }
 }
@@ -137,5 +156,19 @@ extension MoodSelectionViewController {
                 multiplier: 0.5
             ),
         ])
+    }
+}
+
+// MARK: - Actions
+
+extension MoodSelectionViewController {
+    @objc func moodSelectionChanged(_ sender: UIButton) {
+        guard let selectedIndex = moodButtons.firstIndex(of: sender) else {
+            preconditionFailure(
+                "Unable to find the tapped button in the buttons array."
+            )
+        }
+
+        currentMood = moods[selectedIndex]
     }
 }
