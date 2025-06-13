@@ -10,6 +10,15 @@ import UIKit
 class MoodListViewController: UITableViewController {
 
     var moodEntries = [MoodEntry]()
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        tableView.register(
+            UITableViewCell.self,
+            forCellReuseIdentifier: NSStringFromClass(UITableViewCell.self)
+        )
+    }
 }
 
 // MARK: - UITableViewDataSource
@@ -44,6 +53,7 @@ extension MoodListViewController {
         content.image = moodEntry.mood.image
         content.secondaryText = "on \(dateString)"
 
+        cell.selectionStyle = .none
         cell.contentConfiguration = content
 
         return cell

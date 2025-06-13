@@ -48,6 +48,7 @@ class MoodSelectionViewController: UIViewController {
             addMoodButton.backgroundColor = currentMood.color
         }
     }
+    let moodListViewController = MoodListViewController()
 
     let visualEffectView: UIVisualEffectView = {
         let blurEffect = UIBlurEffect(style: .light)
@@ -106,7 +107,13 @@ class MoodSelectionViewController: UIViewController {
 
 extension MoodSelectionViewController {
     func setupViews() {
-        //        emojiStackView.addArrangedSubview(testView)
+        moodListViewController.view.bounds = view.bounds
+        
+        addChild(moodListViewController)
+        view.addSubview(moodListViewController.view)
+        
+        moodListViewController.didMove(toParent: self)
+        
         visualEffectView.contentView.addSubview(emojiStackView)
 
         view.addSubview(visualEffectView)
