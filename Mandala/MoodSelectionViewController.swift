@@ -48,15 +48,14 @@ class MoodSelectionViewController: UIViewController {
         return stackView
     }()
     let addMoodButton: UIButton = {
-        let buttton = UIButton(type: .system)
+        let button = UIButton(type: .custom)
 
-        buttton.translatesAutoresizingMaskIntoConstraints = false
-        buttton.setTitle("Add Mood", for: .normal)
-        buttton.tintColor = .white
-        buttton.backgroundColor = .systemBlue
-        buttton.layer.cornerRadius = buttton.bounds.height / 2
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setTitle("Add Mood", for: .normal)
+        button.tintColor = .white
+        button.backgroundColor = .systemPink
 
-        return buttton
+        return button
     }()
 
     // MARK: - View Lifecycle
@@ -75,6 +74,12 @@ class MoodSelectionViewController: UIViewController {
         moods = [
             .happy, .sad, .angry, .goofy, .crying, .confused, .sleepy, .meh,
         ]
+        
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            
+            self.addMoodButton.layer.cornerRadius = self.addMoodButton.bounds.height / 2
+        }
     }
 }
 
