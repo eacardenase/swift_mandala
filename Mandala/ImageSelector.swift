@@ -69,6 +69,8 @@ class ImageSelector: UIControl {
 
 extension ImageSelector {
     private func configureViewHierarchy() {
+        backgroundColor = .clear
+
         addSubview(selectorStackView)
 
         NSLayoutConstraint.activate([

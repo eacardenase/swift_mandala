@@ -13,28 +13,10 @@ class MoodSelectionViewController: UIViewController {
         didSet {
             currentMood = moods.first
 
-            moodButtons = moods.map { mood in
-                let moodButton = UIButton()
-
-                moodButton.setImage(mood.image, for: .normal)
-                moodButton.imageView?.contentMode = .scaleAspectFit
-                moodButton.adjustsImageWhenHighlighted = false
-                moodButton.addTarget(
-                    self,
-                    action: #selector(moodSelectionChanged),
-                    for: .touchUpInside
-                )
-
-                return moodButton
-            }
+            moodSelector.images = moods.map { $0.image }
         }
     }
-    var moodButtons = [UIButton]() {
-        didSet {
-            oldValue.forEach { $0.removeFromSuperview() }
-            moodButtons.forEach { emojiStackView.addArrangedSubview($0) }
-        }
-    }
+
     var currentMood: Mood? {
         didSet {
             guard let currentMood = currentMood else {
@@ -58,22 +40,30 @@ class MoodSelectionViewController: UIViewController {
 
         return visualEffect
     }()
-    let emojiStackView: UIStackView = {
-        let stackView = UIStackView()
 
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.distribution = .fillEqually
-        stackView.alignment = .center
-        stackView.spacing = 12
+    let moodSelector: ImageSelector = {
+        let imageSelector = ImageSelector()
 
-        return stackView
+        imageSelector.translatesAutoresizingMaskIntoConstraints = false
+        imageSelector.addTarget(
+            self,
+            action: #selector(moodSelectionChanged),
+            for: .valueChanged
+        )
+
+        return imageSelector
     }()
+
     let addMoodButton: UIButton = {
         let button = UIButton(type: .custom)
 
         button.translatesAutoresizingMaskIntoConstraints = false
         button.tintColor = .white
-        button.addTarget(self, action: #selector(addMoodEntry), for: .touchUpInside)
+        button.addTarget(
+            self,
+            action: #selector(addMoodEntry),
+            for: .touchUpInside
+        )
 
         return button
     }()
@@ -115,7 +105,7 @@ extension MoodSelectionViewController {
 
         moodsConfigurable.didMove(toParent: self)
 
-        visualEffectView.contentView.addSubview(emojiStackView)
+        visualEffectView.contentView.addSubview(moodSelector)
 
         view.addSubview(visualEffectView)
         view.addSubview(addMoodButton)
@@ -133,22 +123,22 @@ extension MoodSelectionViewController {
             ),
         ])
 
-        // emojiStackView
+        // moodSelector
         NSLayoutConstraint.activate([
-            emojiStackView.topAnchor.constraint(
+            moodSelector.topAnchor.constraint(
                 equalTo: visualEffectView.topAnchor,
                 constant: 8
             ),
-            emojiStackView.leadingAnchor.constraint(
+            moodSelector.leadingAnchor.constraint(
                 equalTo: view.layoutMarginsGuide.leadingAnchor
             ),
-            emojiStackView.trailingAnchor.constraint(
+            moodSelector.trailingAnchor.constraint(
                 equalTo: view.layoutMarginsGuide.trailingAnchor
             ),
-            emojiStackView.bottomAnchor.constraint(
+            moodSelector.bottomAnchor.constraint(
                 equalTo: view.layoutMarginsGuide.bottomAnchor
             ),
-            emojiStackView.heightAnchor.constraint(equalToConstant: 50),
+            moodSelector.heightAnchor.constraint(equalToConstant: 50),
         ])
 
         // addMoodButton
@@ -170,12 +160,10 @@ extension MoodSelectionViewController {
 // MARK: - Actions
 
 extension MoodSelectionViewController {
-    @objc func moodSelectionChanged(_ sender: UIButton) {
-        guard let selectedIndex = moodButtons.firstIndex(of: sender) else {
-            preconditionFailure(
-                "Unable to find the tapped button in the buttons array."
-            )
-        }
+    @objc func moodSelectionChanged(_ sender: ImageSelector) {
+        print(#function)
+
+        let selectedIndex = sender.selectedIndex
 
         currentMood = moods[selectedIndex]
     }
