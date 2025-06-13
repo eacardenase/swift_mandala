@@ -91,5 +91,7 @@ extension ImageSelector {
         }
 
         selectedIndex = buttonIndex
+
+        sendActions(for: .valueChanged)
     }
 }
