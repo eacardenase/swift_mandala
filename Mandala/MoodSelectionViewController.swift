@@ -115,13 +115,13 @@ extension MoodSelectionViewController {
         // visualEffectView
         NSLayoutConstraint.activate([
             visualEffectView.leadingAnchor.constraint(
-                equalTo: view.safeAreaLayoutGuide.leadingAnchor
+                equalTo: view.layoutMarginsGuide.leadingAnchor
             ),
             visualEffectView.trailingAnchor.constraint(
-                equalTo: view.safeAreaLayoutGuide.trailingAnchor
+                equalTo: view.layoutMarginsGuide.trailingAnchor
             ),
             visualEffectView.bottomAnchor.constraint(
-                equalTo: view.safeAreaLayoutGuide.bottomAnchor
+                equalTo: view.layoutMarginsGuide.bottomAnchor
             ),
         ])
 
