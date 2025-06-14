@@ -64,7 +64,7 @@ class ImageSelector: UIControl {
         let view = UIView()
 
         view.translatesAutoresizingMaskIntoConstraints = false
-//        view.backgroundColor = view.tintColor
+        view.backgroundColor = view.tintColor
 
         return view
     }()
