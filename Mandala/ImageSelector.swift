@@ -12,8 +12,10 @@ class ImageSelector: UIControl {
     var selectedIndex = 0 {
         didSet {
             let imageButton = imageButtons[selectedIndex]
-            
-            highlightView.backgroundColor = highlightColor(forIndex: selectedIndex)
+
+            highlightView.backgroundColor = highlightColor(
+                forIndex: selectedIndex
+            )
 
             highlightViewXConstraint = highlightView.centerXAnchor.constraint(
                 equalTo: imageButton.centerXAnchor
@@ -79,7 +81,9 @@ class ImageSelector: UIControl {
 
     var highlightColors = [UIColor]() {
         didSet {
-            highlightView.backgroundColor = highlightColor(forIndex: selectedIndex)
+            highlightView.backgroundColor = highlightColor(
+                forIndex: selectedIndex
+            )
         }
     }
 
