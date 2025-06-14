@@ -87,10 +87,10 @@ class ImageSelector: UIControl {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     override func layoutSubviews() {
         super.layoutSubviews()
-        
+
         highlightView.layer.cornerRadius = highlightView.bounds.width / 2
     }
 }
@@ -138,7 +138,15 @@ extension ImageSelector {
             preconditionFailure("The buttons and images are not parallel.")
         }
 
-        selectedIndex = buttonIndex
+        let selectionAnimator = UIViewPropertyAnimator(
+            duration: 0.3,
+            curve: .easeInOut
+        ) {
+            self.selectedIndex = buttonIndex
+            self.layoutIfNeeded()
+        }
+
+        selectionAnimator.startAnimation()
 
         sendActions(for: .valueChanged)
     }
