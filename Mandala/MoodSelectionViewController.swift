@@ -161,8 +161,6 @@ extension MoodSelectionViewController {
 
 extension MoodSelectionViewController {
     @objc func moodSelectionChanged(_ sender: ImageSelector) {
-        print(#function)
-
         let selectedIndex = sender.selectedIndex
 
         currentMood = moods[selectedIndex]

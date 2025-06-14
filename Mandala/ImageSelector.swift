@@ -9,7 +9,15 @@ import UIKit
 
 class ImageSelector: UIControl {
 
-    var selectedIndex = 0
+    var selectedIndex = 0 {
+        didSet {
+            let imageButton = imageButtons[selectedIndex]
+
+            highlightViewXConstraint = highlightView.centerXAnchor.constraint(
+                equalTo: imageButton.centerXAnchor
+            )
+        }
+    }
 
     private var imageButtons = [UIButton]() {
         didSet {
@@ -52,6 +60,22 @@ class ImageSelector: UIControl {
         return stackView
     }()
 
+    private let highlightView: UIView = {
+        let view = UIView()
+
+        view.translatesAutoresizingMaskIntoConstraints = false
+//        view.backgroundColor = view.tintColor
+
+        return view
+    }()
+
+    private var highlightViewXConstraint: NSLayoutConstraint! {
+        didSet {
+            oldValue?.isActive = false
+            highlightViewXConstraint.isActive = true
+        }
+    }
+
     // MARK: View Lifecycle
 
     override init(frame: CGRect) {
@@ -72,7 +96,9 @@ extension ImageSelector {
         backgroundColor = .clear
 
         addSubview(selectorStackView)
+        insertSubview(highlightView, belowSubview: selectorStackView)
 
+        // selectorStackView
         NSLayoutConstraint.activate([
             selectorStackView.topAnchor.constraint(equalTo: topAnchor),
             selectorStackView.leadingAnchor.constraint(equalTo: leadingAnchor),
@@ -80,6 +106,20 @@ extension ImageSelector {
                 equalTo: trailingAnchor
             ),
             selectorStackView.bottomAnchor.constraint(equalTo: bottomAnchor),
+        ])
+
+        // highlightView
+        NSLayoutConstraint.activate([
+            highlightView.heightAnchor.constraint(
+                equalTo: highlightView.widthAnchor
+            ),
+            highlightView.heightAnchor.constraint(
+                equalTo: heightAnchor,
+                multiplier: 0.9
+            ),
+            highlightView.centerYAnchor.constraint(
+                equalTo: selectorStackView.centerYAnchor
+            ),
         ])
     }
 }
