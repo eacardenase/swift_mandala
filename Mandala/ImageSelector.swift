@@ -12,6 +12,8 @@ class ImageSelector: UIControl {
     var selectedIndex = 0 {
         didSet {
             let imageButton = imageButtons[selectedIndex]
+            
+            highlightView.backgroundColor = highlightColor(forIndex: selectedIndex)
 
             highlightViewXConstraint = highlightView.centerXAnchor.constraint(
                 equalTo: imageButton.centerXAnchor
@@ -64,7 +66,6 @@ class ImageSelector: UIControl {
         let view = UIView()
 
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = view.tintColor
 
         return view
     }()
@@ -73,6 +74,12 @@ class ImageSelector: UIControl {
         didSet {
             oldValue?.isActive = false
             highlightViewXConstraint.isActive = true
+        }
+    }
+
+    var highlightColors = [UIColor]() {
+        didSet {
+            highlightView.backgroundColor = highlightColor(forIndex: selectedIndex)
         }
     }
 
@@ -127,6 +134,14 @@ extension ImageSelector {
                 equalTo: selectorStackView.centerYAnchor
             ),
         ])
+    }
+
+    private func highlightColor(forIndex index: Int) -> UIColor {
+        guard index >= 0 && index < highlightColors.count else {
+            return UIColor.blue.withAlphaComponent(0.6)
+        }
+
+        return highlightColors[index]
     }
 }
 
