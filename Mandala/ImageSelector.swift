@@ -140,7 +140,7 @@ extension ImageSelector {
 
         let selectionAnimator = UIViewPropertyAnimator(
             duration: 0.3,
-            curve: .easeInOut
+            dampingRatio: 0.7
         ) {
             self.selectedIndex = buttonIndex
             self.layoutIfNeeded()
